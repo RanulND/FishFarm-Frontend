@@ -1,6 +1,6 @@
 export interface Coordinate {
-    x: Float64Array
-    y: Float64Array
+    x: number
+    y: number
 } 
 
 export interface FishFarmRequestPayload {

@@ -1,13 +1,17 @@
-import { Box, colors, Modal, Typography } from "@mui/material"
+import { Box, Modal, Typography } from "@mui/material"
 import FishFarmForm from "../fishFarmForm/FishFarmForm"
 import WorkerForm from "../workerForm/WorkerForm"
 import { ModalMode } from "../../utilities/enums/modalMode"
 import WorkerDetails from "../workerDetails/WorkerDetails"
+import { FishFarmResponsePayload } from "../../utilities/types/fishFarm"
+import { WorkerResponsePayload } from "../../utilities/types/worker"
 
 interface Props {
     open: boolean
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
     visibility: ModalMode
+    selectedFarm?: FishFarmResponsePayload
+    selectedWorker?: WorkerResponsePayload
 }
 const ModalComponent = (props: Props) => {
     const handleVisibility = (isVisible: boolean) => {
@@ -36,15 +40,22 @@ const ModalComponent = (props: Props) => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          {/* {
-            props.visibility === ModalMode.FARM_ADD && <FishFarmForm />
+          {
+            (props.visibility === ModalMode.FARM_ADD|| props.visibility === ModalMode.FARM_EDIT) && "Fish Farm Details"
           }
           {
-            props.visibility === ModalMode.WORKER_ADD && <WorkerForm />
-          } */}
-          <WorkerDetails />
+            (props.visibility === ModalMode.WORKER_ADD) || (props.visibility === ModalMode.WORKER_EDIT) && "Worker Details"
+          }
+          </Typography>
+          {
+            (props.visibility === ModalMode.FARM_ADD|| props.visibility === ModalMode.FARM_EDIT) && <FishFarmForm setOpen={props.setOpen} modaleMode={props.visibility} fishFarm={props.selectedFarm} />
+          }
+          {
+            (props.visibility === ModalMode.WORKER_ADD|| props.visibility === ModalMode.WORKER_EDIT) && <WorkerForm setOpen={props.setOpen} worker={props.selectedWorker} modaleMode={props.visibility} selectedFarm={props.selectedFarm} />
+          }
+          {
+            props.visibility === ModalMode.WORKER_VIEW && props.selectedWorker && <WorkerDetails worker={props.selectedWorker}  />
+          }
 
         </Box>
       </Modal>

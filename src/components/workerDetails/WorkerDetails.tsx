@@ -1,6 +1,17 @@
 import { Box, Container, Divider, Grid2 } from "@mui/material"
+import { WorkerResponsePayload } from "../../utilities/types/worker"
+import { useMemo } from "react"
 
-const WorkerDetails = () => {
+
+const WorkerDetails = ({worker}: {worker: WorkerResponsePayload}) => {
+    const computeAge = useMemo(() => {
+        const dob = new Date(worker.dob)
+        const currentDate = new Date()
+
+        const age = currentDate.getFullYear() - dob.getFullYear() 
+        return age
+
+    },[worker.dob])
 
     return (
         <Container maxWidth={false} sx={{ paddingY: 2 }}>
@@ -19,19 +30,19 @@ const WorkerDetails = () => {
             <Grid2 size={12} spacing={2} container marginTop={2}>
                     <Grid2 size={6}>
                         <h4 style={{ fontWeight: 700, margin: 0, fontSize: "110%" }}>Email</h4>
-                        <p style={{ margin: 0 }}>Ranul Dayarathne</p>
+                        <p style={{ margin: 0 }}>{worker.email}</p>
                     </Grid2>
                     <Grid2 size={6}>
                         <h4 style={{ fontWeight: 700, margin: 0, fontSize: "110%" }}>Age</h4>
-                        <p style={{ margin: 0 }}>26</p>
+                        <p style={{ margin: 0 }}>{computeAge}hh</p>
                     </Grid2>
                     <Grid2 size={6}>
                         <h4 style={{ fontWeight: 700, margin: 0, fontSize: "110%" }}>Position</h4>
-                        <p style={{ margin: 0 }}>Worker</p>
+                        <p style={{ margin: 0 }}>{worker.workerPosition}</p>
                     </Grid2>
                     <Grid2 size={6}>
                         <h4 style={{ fontWeight: 700, margin: 0, fontSize: "110%" }}>Certified Until</h4>
-                        <p style={{ margin: 0 }}>26 of Feb 2025</p>
+                        <p style={{ margin: 0 }}>{(new Date(worker.certifiedUntil)).toDateString()}</p>
                     </Grid2>
                 </Grid2>
             

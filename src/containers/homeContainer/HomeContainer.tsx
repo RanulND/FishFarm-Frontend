@@ -4,10 +4,25 @@ import ModalComponent from "../../components/modal/Modal"
 import ListItem from "../../components/listItem/ListItem"
 import { ListItemMode } from "../../utilities/enums/listItemMode"
 import { ModalMode } from "../../utilities/enums/modalMode"
+import { useQuery } from "@tanstack/react-query"
+import { getAllFishFarms } from "../../services/fishFarmService"
+import Loader from "../../components/loader/Loader"
+import { FishFarmResponsePayload } from "../../utilities/types/fishFarm"
+import { WorkerResponsePayload } from "../../utilities/types/worker"
 
 const Home = () => {
     const [modalOpen,setModalOpen] = useState(false)
     const [modalMode,setModalMode] = useState<ModalMode>(ModalMode.NONE)
+    const {data: fishFarms, isLoading} = useQuery({
+        queryFn: () => getAllFishFarms(),
+        queryKey: ["fishfarms"],
+    });
+    const [selectedFarm, setSelectedFarm] = useState<FishFarmResponsePayload>()
+    const [selectedWorker, setSelectedWorker] = useState<WorkerResponsePayload>()
+
+    if(isLoading) {
+        return <Loader />
+    }
 
     const handleModalContent = (mode: ModalMode) => {
         setModalOpen(true)
@@ -22,9 +37,9 @@ const Home = () => {
                 </Box>
             </Container>
             <Container maxWidth={false} sx={{paddingY: 2}}>
-                <ListItem listItemMode={ListItemMode.WORKER} />
+                <ListItem listItemMode={ListItemMode.FISH_FARM} farmItems={fishFarms?.data} setModalOpen={setModalOpen} setModalMode={setModalMode} setSelectedFarm={setSelectedFarm} setSelectedWorker={setSelectedWorker}  />
             </Container>
-            <ModalComponent open={modalOpen} setOpen={setModalOpen} visibility={modalMode}  />
+            <ModalComponent open={modalOpen} setOpen={setModalOpen} visibility={modalMode} selectedFarm={selectedFarm}   />
         </>
 
     )
