@@ -6,6 +6,8 @@ import { FishFarmResponsePayload } from "../../utilities/types/fishFarm"
 import { ModalMode } from "../../utilities/enums/modalMode"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteFishFarm } from "../../services/fishFarmService"
+import { deleteWorker } from "../../services/workerService"
+import { useNavigate } from "react-router"
 
 interface ParentProps {
     listItemMode: ListItemMode
@@ -70,6 +72,7 @@ const WorkerTableHeader = () => {
 
 const FishFarmTableRow = (props: FishFarmProps) => {
     const queryClient = useQueryClient()
+    const navigate = useNavigate()
 
     const handleModalVisibility = () => {
         
@@ -109,12 +112,15 @@ const FishFarmTableRow = (props: FishFarmProps) => {
             <TableCell align="right">{props.fishFarm.hasBarge? "True":"False"}</TableCell>
             <TableCell align="right"><Button onClick={() => {handleModalVisibility()}}><Edit /></Button></TableCell>
             <TableCell align="right"><Button onClick={() => handleDelete()}><Delete /></Button></TableCell>
-            <TableCell align="right"><Button><Visibility /></Button></TableCell>
+            <TableCell align="right"><Button onClick={() => navigate(`fishfarm/${props.fishFarm.id}`)}><Visibility /></Button></TableCell>
         </TableRow>
     )
 }
 
 const WorkerTableRow = (props: WorkerProps) => {
+
+    const queryClient = useQueryClient()    
+
     const handleModalVisibility = () => {
         if (props.worker){
             props.setModalMode(ModalMode.WORKER_EDIT)
@@ -123,14 +129,20 @@ const WorkerTableRow = (props: WorkerProps) => {
         }
     }
 
+    const handleDelete = async () => {
 
-    // const handleDelete = async () => {
-    //     try{
-    //         await deleteMutation(props.fishFarm.id)
-    //     }catch(e){
-    //         console.error(e)
-    //     }
-    // }
+        // const { mutateAsync: deleteworkerMutation } = useMutation({
+        //     mutationFn: (id:number) => deleteWorker(props.),
+        //     onSuccess: () => {
+        //         queryClient.invalidateQueries({ queryKey: ["fishfarms"] })
+        //     }
+        // })
+        // try{
+        //     await deleteWorkerMutation(props.fishFarm.id)
+        // }catch(e){
+        //     console.error(e)
+        // }
+    }
     return (
         <TableRow
             key={"row.name"}
@@ -144,7 +156,7 @@ const WorkerTableRow = (props: WorkerProps) => {
             <TableCell align="right">{props.worker.workerPosition}</TableCell>
             <TableCell align="right">{props.worker.certifiedUntil}</TableCell>
             <TableCell align="right"><Button onClick={() => {handleModalVisibility()}}><Edit /></Button></TableCell>
-            <TableCell align="right"><Button><Delete /></Button></TableCell>
+            <TableCell align="right"><Button onClick={() => handleDelete()}><Delete /></Button></TableCell>
             <TableCell align="right"><Button><Visibility /></Button></TableCell>
         </TableRow>
     )

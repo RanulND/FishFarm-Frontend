@@ -74,10 +74,10 @@ const FishFarmDetails = () => {
             <h1 style={{textAlign:"center", color:"#000"}}>Workers</h1>
 
             <Container maxWidth={false} sx={{paddingY: 2}}>
-                <ListItem listItemMode={ListItemMode.WORKER} workerItems={workers} setModalOpen={setModalOpen} setModalMode={setModalMode} setSelectedFarm={setFishFarm} setSelectedWorker={setSelectedWorker}  />
+                <ListItem listItemMode={ListItemMode.WORKER} workerItems={workers} setModalOpen={setModalOpen} setModalMode={setModalMode} setSelectedFarm={setFishFarm} setSelectedWorker={setSelectedWorker} />
             </Container>
 
-            <ModalComponent open={modalOpen} setOpen={setModalOpen} visibility={modalMode} selectedFarm={fishFarm}   />
+            <ModalComponent open={modalOpen} setOpen={setModalOpen} visibility={modalMode} selectedFarm={fishFarm} selectedWorker={selectedWorker}   />
 
         </Container>
 

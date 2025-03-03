@@ -66,7 +66,7 @@ const WorkerForm = (props: Props) => {
         }
     })
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if(props.modaleMode === ModalMode.WORKER_ADD && dob && certifiedUntil && props.selectedFarm){
             const worker: WorkerRequestPayload = {
                 name: name,
@@ -77,7 +77,15 @@ const WorkerForm = (props: Props) => {
                 workerPosition: position,
                 fishFarmId: props.selectedFarm.id
             }
+            try{
+                await addWorkerMutation(worker)
+            }catch(err){
+                console.error(err);
+                
+            }
         }
+
+        
     }
 
     useEffect(() => {
@@ -175,7 +183,7 @@ const WorkerForm = (props: Props) => {
             <Divider sx={{ marginY: 2 }} />
             <Box sx={{ display: "flex", gap: 2 }} justifyContent={"flex-end"}>
                 <Button onClick={() => props.setOpen(false)}>Cancel</Button>
-                <Button sx={{ backgroundColor: "#000", color: "#FFF", padding: 1, borderRadius: 2 }} onClick={() => handleSubmit()}>Add a Fish Farm</Button>
+                <Button sx={{ backgroundColor: "#000", color: "#FFF", padding: 1, borderRadius: 2 }} onClick={() => handleSubmit()}>{props.modaleMode === ModalMode.WORKER_ADD? "Add a Worker":"Update Worker"}</Button>
             </Box>
 
         </>
